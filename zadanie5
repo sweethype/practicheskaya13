@@ -1,0 +1,187 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace deyezaxo
+{
+    namespace ZooManagement
+    {
+        public abstract class Animal
+        {
+            public string Species { get; set; }
+            public int Age { get; set; }
+            public string Habitat { get; set; }
+            public string Diet { get; set; }
+
+            protected Animal(string species, int age, string habitat, string diet)
+            {
+                Species = species;
+                Age = age;
+                Habitat = habitat;
+                Diet = diet;
+            }
+            public virtual void MakeSound()
+            {
+                Console.WriteLine($"{Species} издает звук.");
+            }
+
+            public virtual void Eat()
+            {
+                Console.WriteLine($"{Species} питается: {Diet}.");
+            }
+
+            public virtual void PrintInfo()
+            {
+                Console.WriteLine($"Вид: {Species}");
+                Console.WriteLine($"Возраст: {Age} лет");
+                Console.WriteLine($"Среда обитания: {Habitat}");
+                Console.WriteLine($"Рацион: {Diet}");
+            }
+        }
+        public class Mammal : Animal
+        {
+            public string Fur { get; set; }
+            public int GestationPeriod { get; set; }
+
+            public Mammal(string species, int age, string habitat, string diet, string fur, int gestationPeriod)
+                : base(species, age, habitat, diet)
+            {
+                Fur = fur;
+                GestationPeriod = gestationPeriod;
+            }
+
+            public void GiveBirth()
+            {
+                Console.WriteLine($"{Species} вынашивает детеныша {GestationPeriod} месяцев.");
+            }
+
+            public override void PrintInfo()
+            {
+                base.PrintInfo();
+                Console.WriteLine($"Тип меха: {Fur}");
+                Console.WriteLine($"Продолжительность беременности: {GestationPeriod} мес.");
+            }
+        }
+        public class Bird : Animal
+        {
+            public double Wingspan { get; set; }
+            public string Nesting { get; set; }
+
+            public Bird(string species, int age, string habitat, string diet, double wingspan, string nesting)
+                : base(species, age, habitat, diet)
+            {
+                Wingspan = wingspan;
+                Nesting = nesting;
+            }
+            public void Fly()
+            {
+                Console.WriteLine($"{Species} летает с размахом крыльев {Wingspan} м.");
+            }
+
+            public override void MakeSound()
+            {
+                Console.WriteLine($"{Species} поет.");
+            }
+
+            public override void PrintInfo()
+            {
+                base.PrintInfo();
+                Console.WriteLine($"Размах крыльев: {Wingspan} м");
+                Console.WriteLine($"Тип гнездования: {Nesting}");
+            }
+        }
+        public class Reptile : Animal
+        {
+            public string SkinType { get; set; }
+            public double Temperature { get; set; }
+
+            public Reptile(string species, int age, string habitat, string diet, string skinType, double temperature)
+                : base(species, age, habitat, diet)
+            {
+                SkinType = skinType;
+                Temperature = temperature;
+            }
+
+            public void Bask()
+            {
+                Console.WriteLine($"{Species} греется при температуре {Temperature}°C.");
+            }
+
+            public override void PrintInfo()
+            {
+                base.PrintInfo();
+                Console.WriteLine($"Тип кожи: {SkinType}");
+                Console.WriteLine($"Предпочтительная температура: {Temperature}°C");
+            }
+        }
+        public class Fish : Animal
+        {
+            public string ScaleType { get; set; }
+            public double Depth { get; set; }
+
+            public Fish(string species, int age, string habitat, string diet, string scaleType, double depth)
+                : base(species, age, habitat, diet)
+            {
+                ScaleType = scaleType;
+                Depth = depth;
+            }
+
+            public void Swim()
+            {
+                Console.WriteLine($"{Species} плавает на глубине {Depth} м.");
+            }
+
+            public override void MakeSound()
+            {
+                Console.WriteLine($"{Species} не издает звуков.");
+            }
+
+            public override void PrintInfo()
+            {
+                base.PrintInfo();
+                Console.WriteLine($"Тип чешуи: {ScaleType}");
+                Console.WriteLine($"Глубина обитания: {Depth} м");
+            }
+        }
+    }
+}
+
+
+using deyezaxo.ZooManagement;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace deyezaxo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            {
+                Animal[] animals = {
+                new Mammal("Бобр", 12, "Монголия", "Древесина, трава", "Нестриженный", 4),
+                new Bird("Фламинго", 18, "Тропические и субтропические регионы", "Водросли", 1.71, "Мелководные лагуны"),
+                new Reptile("Хамелеон", 6, "Пустыня", "Насекомые", "Чешуя", 25),
+                new Fish("Аксолотль", 9, "Озеро Сочимилько", "Живыми или замороженными беспозвоночными", "Мягкая кожа", 2240)
+            };
+                foreach (var animal in animals)
+                {
+                    animal.PrintInfo();
+                    animal.MakeSound();
+                    animal.Eat();
+                    if (animal is Mammal mammal) mammal.GiveBirth();
+                    if (animal is Bird bird) bird.Fly();
+                    if (animal is Reptile reptile) reptile.Bask();
+                    if (animal is Fish fish) fish.Swim();
+                    Console.WriteLine();
+
+                }
+            }
+        }
+    }
+}
