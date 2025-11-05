@@ -1,0 +1,131 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace deyezaxo
+{
+    namespace EducationalCourses
+    {
+        public abstract class Course
+        {
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string Author { get; set; }
+            public decimal Price { get; set; }
+            protected Course(string title, string description, string author, decimal price)
+            {
+                Title = title;
+                Description = description;
+                Author = author;
+                Price = price;
+            }
+            public abstract void StartLearning();
+
+            public virtual void DisplayInfo()
+            {
+                Console.WriteLine($"Курс: {Title}");
+                Console.WriteLine($"Описание: {Description}");
+                Console.WriteLine($"Автор: {Author}");
+                Console.WriteLine($"Цена: {Price} руб.");
+            }
+        }
+        public class VideoCourse : Course
+        {
+            public int VideoCount { get; set; }
+            public int TotalDuration { get; set; }
+
+            public VideoCourse(string title, string description, string author, decimal price, int videoCount, int totalDuration)
+                : base(title, description, author, price)
+            {
+                VideoCount = videoCount;
+                TotalDuration = totalDuration;
+            }
+            public override void StartLearning()
+            {
+                Console.WriteLine($"Запуск видеоплеера для курса '{Title}'. Всего видео: {VideoCount}, общая продолжительность: {TotalDuration} мин.");
+            }
+            public override void DisplayInfo()
+            {
+                base.DisplayInfo();
+                Console.WriteLine($"Количество видео: {VideoCount}");
+                Console.WriteLine($"Общая продолжительность: {TotalDuration} мин.");
+                Console.WriteLine("Тип: Видеокурс");
+            }
+        }
+        public class TextCourse : Course
+        {
+            public int ChapterCount { get; set; }
+            public int TotalTextVolume { get; set; }
+            public TextCourse(string title, string description, string author, decimal price, int chapterCount, int totalTextVolume)
+                : base(title, description, author, price)
+            {
+                ChapterCount = chapterCount;
+                TotalTextVolume = totalTextVolume;
+            }
+            public override void StartLearning()
+            {
+                Console.WriteLine($"Открытие текстового курса '{Title}'. Глав: {ChapterCount}, общий объем: {TotalTextVolume} страниц.");
+            }
+            public override void DisplayInfo()
+            {
+                base.DisplayInfo();
+                Console.WriteLine($"Количество глав: {ChapterCount}");
+                Console.WriteLine($"Общий объем текста: {TotalTextVolume} стр.");
+                Console.WriteLine("Тип: Текстовый курс");
+            }
+        }
+        public class InteractiveCourse : Course
+        {
+            public int ExerciseCount { get; set; }
+            public string CheckingSystem { get; set; }
+
+            public InteractiveCourse(string title, string description, string author, decimal price, int exerciseCount, string checkingSystem)
+                : base(title, description, author, price)
+            {
+                ExerciseCount = exerciseCount;
+                CheckingSystem = checkingSystem;
+            }
+            public override void StartLearning()
+            {
+                Console.WriteLine($"Начало интерактивного курса '{Title}'. Упражнений: {ExerciseCount}, система проверки: {CheckingSystem}.");
+            }
+            public override void DisplayInfo()
+            {
+                base.DisplayInfo();
+                Console.WriteLine($"Количество упражнений: {ExerciseCount}");
+                Console.WriteLine($"Система проверки: {CheckingSystem}");
+                Console.WriteLine("Тип: Интерактивный курс");
+            }
+        }
+    }
+}
+
+using deyezaxo.EducationalCourses;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace deyezaxo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Course[] courses = {
+                new VideoCourse("Нейросети", "Практический курс", "Skillbox", 5946, 130, 876),
+                new TextCourse("Копирайтинг", "от А до Я 2.0", "Skillbox", 33000, 30, 600),
+                new InteractiveCourse("IT-специалист с нуля", "Нейросети + IT-специалист", "Skillfactory", 7780, 87, "Автоматическая проверка кода")
+            };
+            foreach (var course in courses)
+            {
+                course.DisplayInfo();
+                course.StartLearning();
+                Console.WriteLine();
+            }
+        }
+    }
+}
