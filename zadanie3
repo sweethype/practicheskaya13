@@ -1,0 +1,154 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace deyezaxo
+{
+    namespace LibrarySystem
+    {
+        public abstract class LibraryItem
+        {
+            public string Title { get; set; }
+            public string Author { get; set; }
+            public int Year { get; set; }
+            public bool IsAvailable { get; set; } = true;
+
+            protected LibraryItem(string title, string author, int year)
+            {
+                Title = title;
+                Author = author;
+                Year = year;
+            }
+            public virtual void Checkout()
+            {
+                if (IsAvailable)
+                {
+                    IsAvailable = false;
+                    Console.WriteLine($"Материал '{Title}' выдан.");
+                }
+                else
+                {
+                    Console.WriteLine($"Материал '{Title}' уже выдан.");
+                }
+            }
+            public virtual void Return()
+            {
+                IsAvailable = true;
+                Console.WriteLine($"Материал '{Title}' возвращен.");
+            }
+
+            public virtual void PrintInfo()
+            {
+                Console.WriteLine($"Название: {Title}");
+                Console.WriteLine($"Автор: {Author}");
+                Console.WriteLine($"Год: {Year}");
+                Console.WriteLine($"Статус: {(IsAvailable ? "Доступен" : "Выдан")}");
+            }
+        }
+        public class Book : LibraryItem
+        {
+            public int Page { get; set; }
+            public string ISBN { get; set; }
+
+            public Book(string title, string author, int year, int page, string isbn)
+                : base(title, author, year)
+            {
+                Page = page;
+                ISBN = isbn;
+            }
+            public override void PrintInfo()
+            {
+                base.PrintInfo();
+                Console.WriteLine($"Количество страниц: {Page}");
+                Console.WriteLine($"ISBN: {ISBN}");
+                Console.WriteLine("Тип: Книга");
+            }
+        }
+        public class Magazine : LibraryItem
+        {
+            public int Issue { get; set; }
+            public string Frequency { get; set; }
+
+            public Magazine(string title, string publisher, int year, int issue, string frequency)
+                : base(title, publisher, year)
+            {
+                Issue = issue;
+                Frequency = frequency;
+            }
+
+            public override void PrintInfo()
+            {
+                base.PrintInfo();
+                Console.WriteLine($"Номер выпуска: {Issue}");
+                Console.WriteLine($"Периодичность: {Frequency}");
+                Console.WriteLine("Тип: Журнал");
+            }
+        }
+        public class DVD : LibraryItem
+        {
+            public int Duration { get; set; }
+            public string Rating { get; set; }
+
+            public DVD(string title, string director, int year, int duration, string rating)
+                : base(title, director, year)
+            {
+                Duration = duration;
+                Rating = rating;
+            }
+
+            public override void PrintInfo()
+            {
+                base.PrintInfo();
+                Console.WriteLine($"Продолжительность: {Duration} мин.");
+                Console.WriteLine($"Рейтинг: {Rating}");
+                Console.WriteLine("Тип: DVD");
+            }
+        }
+        public class Audiobook : LibraryItem
+        {
+            public int Duration { get; set; }
+            public string Narrator { get; set; }
+
+            public Audiobook(string title, string author, int year, int duration, string narrator)
+                : base(title, author, year)
+            {
+                Duration = duration;
+                Narrator = narrator;
+            }
+            public override void PrintInfo()
+            {
+                base.PrintInfo();
+                Console.WriteLine($"Продолжительность: {Duration} мин.");
+                Console.WriteLine($"Диктор: {Narrator}");
+                Console.WriteLine("Тип: Аудиокнига");
+            }
+        }
+    }
+}
+
+using deyezaxo.LibrarySystem;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace deyezaxo
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Book book = new Book("Дежавю", "Олег Нечипоренчко", 2019, 160, "978-5-17-139207-9");
+            Magazine magazine = new Magazine("National Geographic", "Редакция", 2024, 3, "Ежемесячный");
+            DVD dvd = new DVD("Дьявол носит прада", "Лорен Вайсбергер", 2006, 109, "PG-13");
+            Audiobook audiobook = new Audiobook("Анна Каренина", "Лев Толстой", 1878 , 715, "Евгений Терновский");
+            Console.WriteLine($"Книга: {book.Title}, Автор: {book.Author}, Страниц: {book.Page}, ISBN: {book.ISBN}");
+            Console.WriteLine($"Журнал: {magazine.Title}, Выпуск: {magazine.Issue}, Периодичность: {magazine.Frequency}");
+            Console.WriteLine($"DVD: {dvd.Title}, Продолжительность: {dvd.Duration} мин, Рейтинг: {dvd.Rating}");
+            Console.WriteLine($"Аудиокнига: {audiobook.Title}, Диктор: {audiobook.Narrator}, Длительность: {audiobook.Duration} мин");
+        }
+    }
+}
